@@ -63,11 +63,11 @@
 
 // 左侧工具栏位置
 .custom-palette {
-	position: absolute;
-	left: 8px;
-	top: 8px;
+	//position: absolute;
+	//left: 8px;
+	//top: 8px;
 	box-sizing: border-box;
-	width: 244px;
+	width: 260px;
 	height: 100vh;
 	overflow: auto;
 
@@ -79,6 +79,12 @@
 		margin-bottom: 10px;
 		cursor: pointer;
 		text-align: center;
+		border-radius: 4px 4px 0 0;
+
+		.title{
+			text-align: center;
+			padding: 0 8px;
+		}
 
 		span {
 			vertical-align: middle;
@@ -103,8 +109,8 @@
 		flex-wrap: wrap;
 		justify-content: start;
 		overflow: auto;
-		transform:translateZ(0);
-		height: 200px;
+		transition: height 0.4s ease;
+		max-height: 233px;
 		.control{
 			overflow:hidden;
 			text-overflow:ellipsis;

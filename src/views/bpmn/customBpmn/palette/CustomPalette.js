@@ -162,7 +162,8 @@ Palette.prototype._init = function () {
       container.appendChild(domify('<div class="custom-palette-toggle"></div>'))
     }
   }
-  parentContainer.appendChild(container)
+  // 此行代码表示将 palette 放入 canvas 父容器中
+  // parentContainer.appendChild(container)
 
   // 下面是绑定 click 、 dragstart
 
@@ -264,7 +265,7 @@ Palette.prototype._update = function () {
       )
       const arrowDown = 'el-icon-arrow-down'
       const groupLabel = domify(
-        `<div class="groupLabel"><i id="custom-palette-group-arrow" class="${arrowDown}"></i><span title="${grouping}">${grouping}</span></div></div>`
+        `<div class="groupLabel"><div class="title"><i id="custom-palette-group-arrow" class="${arrowDown}"></i><span title="${grouping}">${grouping}</span></div></div>`
       )
 
       // 给groupLabel添加点击事件

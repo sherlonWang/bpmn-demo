@@ -17,13 +17,12 @@
         style="display: none"
         @change="loadXML" />
     </div>
-
+    <div ref="palette" class="myPalette">
+      <div class="custom-palette-entries"></div>
+      <div class="custom-palette-toggle"></div>
+    </div>
     <div class="canvas"
       ref="canvas">
-          <div ref="palette">
-            <div class="custom-palette-entries"></div>
-            <div class="custom-palette-toggle"></div>
-          </div>
     </div>
   </div>
 </template>
@@ -140,7 +139,7 @@ export default {
       // this.getEventBusAll() 查看所有可用事件
       const eventBus = this.bpmnModeler.get('eventBus')
       eventBus.on('element.click', e => {
-        console.log('点击了元素', e)
+        // console.log('点击了元素', e)
       })
     },
 
@@ -329,21 +328,34 @@ export default {
 
 <style lang="less" scoped>
 .bpmn {
+  display: inline-block;
   width: 100%;
   height: 100vh;
   position: relative;
 
+  .myPalette{
+    background-color: #ffffff;
+    margin: 8px 8px 0 8px;
+    border: 1px solid #ebeef5;
+    display: inline-block;
+    z-index: 999;
+    width: 260px;
+    position: relative;
+  }
+
   .canvas {
-    width: 100%;
+    background-color: #e3f3ff;
+    display: inline-block;
+    width:calc(100% - 282px);
     height: 100%;
   }
 
-  .panel {
-    position: absolute;
-    right: 0;
-    top: 0;
-    width: 300px;
-  }
+  /*.panel {*/
+  /*  position: absolute;*/
+  /*  right: 0;*/
+  /*  top: 0;*/
+  /*  width: 300px;*/
+  /*}*/
 
   .tool {
     position: absolute;
