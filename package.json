@@ -14,6 +14,7 @@
     "core-js": "^3.6.5",
     "diagram-js-minimap": "^2.0.3",
     "element-ui": "^2.13.2",
+    "sass-loader": "^10.0.5",
     "sftp-sync-deploy": "^0.7.1",
     "vue": "^2.6.11",
     "vue-router": "^3.2.0",

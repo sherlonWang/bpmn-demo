@@ -88,6 +88,7 @@ Palette.$inject = ['eventBus', 'canvas',
  * palette.registerProvider(800, paletteProvider);
  */
 Palette.prototype.registerProvider = function (priority, provider) {
+  console.log("palette registerProvider")
   if (!provider) {
     provider = priority
     priority = DEFAULT_PRIORITY
@@ -106,12 +107,14 @@ Palette.prototype.registerProvider = function (priority, provider) {
  * @return {Object<string, PaletteEntryDescriptor>} map of entries
  */
 Palette.prototype.getEntries = function () {
+  console.log("palette getEntries")
   var providers = this._getProviders()
 
   return providers.reduce(addPaletteEntries, {})
 }
 
 Palette.prototype._rebuild = function () {
+  console.log("palette _rebuild")
   if (!this._diagramInitialized) {
     return
   }
@@ -133,13 +136,16 @@ Palette.prototype._rebuild = function () {
  * Initialize
  */
 Palette.prototype._init = function () {
+  console.log("palette init")
   var self = this
 
   var eventBus = this._eventBus
 
   var parentContainer = this._getParentContainer()
+  console.log("parentContainer:",parentContainer)
   // 获取传入的工具栏容器
   var container = this._container = this._paletteContainer
+  console.log("container:",container)
   // 未找到 使用默认
   if (!container) {
     container = this._container = domify(Palette.HTML_MARKUP)
@@ -188,6 +194,7 @@ Palette.prototype._init = function () {
 }
 
 Palette.prototype._getProviders = function (id) {
+  console.log("palette _getProviders")
   var event = this._eventBus.createEvent({
     type: 'palette.getProviders',
     providers: []
@@ -204,6 +211,7 @@ Palette.prototype._getProviders = function (id) {
  * @param  {Object} [state] { open, twoColumn }
  */
 Palette.prototype._toggleState = function (state) {
+  console.log("palette _toggleState")
   state = state || {}
 
   var parent = this._getParentContainer()
@@ -235,69 +243,92 @@ Palette.prototype._toggleState = function (state) {
 }
 
 Palette.prototype._update = function () {
+  debugger
+  console.log("palette _update")
   var entriesContainer = domQuery('.custom-palette-entries', this._container)
+  console.log("entriesContainer:",entriesContainer)
   var entries = this._entries = this.getEntries()
   domClear(entriesContainer)
 
+  console.log("entries:",entries)
   // 遍历工具栏元素
   forEach(entries, function (entry, id) {
     var grouping = entry.group || 'default'
     // 设置分组
     var container = domQuery('[data-group=' + grouping + ']', entriesContainer)
+    console.log("group-container:",container)
+    // 如果不存在，添加groupLabel
     if (!container) {
       container = domify(
         '<div class="group" data-group="' + grouping + '"></div>'
       )
       const arrowDown = 'el-icon-arrow-down'
       const groupLabel = domify(
-        `<div class="groupLabel"><span title="${grouping}">${grouping}</span></i></i><i id="custom-palette-group-arrow" class="${arrowDown}"></i></div></div>`
+        `<div class="groupLabel"><i id="custom-palette-group-arrow" class="${arrowDown}"></i><span title="${grouping}">${grouping}</span></div></div>`
       )
 
+      // 给groupLabel添加点击事件
       groupLabel.addEventListener('click', function () {
         const iconArrowDown = this.querySelector('.el-icon-arrow-down')
         const iconArrowLeft = this.querySelector('.el-icon-arrow-left')
         if (iconArrowDown) {
           // const isArrowDown = Array.from(iconArrowDown).includes('el-icon-arrow-down')
           iconArrowDown.classList = ['el-icon-arrow-left']
-          const entry = this.parentNode.querySelectorAll('.entry')
-          forEach(entry, function (it) {
-            it.style.display = 'none'
-          })
+          const entrySet = this.parentNode.querySelectorAll('.entry-set')
+          // entrySet[0].style.transition='height 0.4s ease';
+          entrySet[0].style.height='0';
+          // entrySet[0].style.display='none';
+          // forEach(entry, function (it) {
+          //   it.style.height = '0'
+          //   // it.style.display = 'none'
+          //   it.style.transition='height 0.4s ease';
+          // })
         }
         if (iconArrowLeft) {
           iconArrowLeft.classList = ['el-icon-arrow-down']
-          const entry = this.parentNode.querySelectorAll('.entry')
-          forEach(entry, function (it) {
-            it.style.display = 'block'
-          })
+          const entrySet = this.parentNode.querySelectorAll('.entry-set')
+          // entrySet[0].style.transition='height 0.4s ease';
+          entrySet[0].style.height='auto';
+          // entrySet[0].style.display='block';
         }
       })
 
       container.appendChild(groupLabel)
+      // 给组件元素添加一层包裹
+      let entrySet = domify('<div class="entry-set"></div>')
+      container.appendChild(entrySet)
       entriesContainer.appendChild(container)
     }
+
+    let entrySet = domQuery('.entry-set', container)
 
     var html = entry.html || (
       entry.separator
         ? '<hr class="separator" />'
-        : '<div class="entry" draggable="true"></div>')
+        : `<div class="control">
+    <div class="entry" draggable="true">
+
+    </div>
+    <span>${entry.title}</span>
+</div>`)
 
     var control = domify(html)
-    container.appendChild(control)
-
+    // 添加组件
+    entrySet.appendChild(control)
     if (!entry.separator) {
-      domAttr(control, 'data-action', id)
+      domAttr(domQuery('.entry',control), 'data-action', id)
 
       if (entry.title) {
-        domAttr(control, 'title', entry.title)
+        domAttr(domQuery('.entry',control), 'title', entry.title)
       }
 
       if (entry.className) {
-        addClasses(control, entry.className)
+        addClasses(domQuery('.entry',control), entry.className)
       }
 
       if (entry.imageUrl) {
-        control.appendChild(domify('<img src="' + entry.imageUrl + '">'))
+        console.log('img url')
+        domQuery('.entry',control).appendChild(domify('<img src="' + entry.imageUrl + '">'))
       }
     }
   })
@@ -313,6 +344,7 @@ Palette.prototype._update = function () {
  * @param  {Event} event
  */
 Palette.prototype.trigger = function (action, event, autoActivate) {
+  console.log("palette trigger")
   var entries = this._entries
   var elementFactory = this._elementFactory
   var create = this._create
@@ -353,6 +385,7 @@ Palette.prototype.trigger = function (action, event, autoActivate) {
 }
 
 Palette.prototype._layoutChanged = function () {
+  console.log("palette _layoutChanged")
   this._toggleState({})
 }
 
@@ -365,6 +398,7 @@ Palette.prototype._layoutChanged = function () {
    * @return {boolean}
    */
 Palette.prototype._needsCollapse = function (availableHeight, entries) {
+  console.log("palette _needsCollapse")
   // top margin + bottom toggle + bottom margin
   // implementors must override this method if they
   // change the palette styles
@@ -405,6 +439,7 @@ Palette.prototype.isActiveTool = function (tool) {
 }
 
 Palette.prototype.updateToolHighlight = function (name) {
+  console.log("palette updateToolHighlight")
   var entriesContainer,
     toolsContainer
 

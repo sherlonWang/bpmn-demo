@@ -17,13 +17,14 @@
         style="display: none"
         @change="loadXML" />
     </div>
-    <div ref="palette"
-      class="asasa">
-      <div class="custom-palette-entries"></div>
-      <div class="custom-palette-toggle"></div>
-    </div>
+
     <div class="canvas"
-      ref="canvas"></div>
+      ref="canvas">
+          <div ref="palette">
+            <div class="custom-palette-entries"></div>
+            <div class="custom-palette-toggle"></div>
+          </div>
+    </div>
   </div>
 </template>
 
@@ -90,7 +91,7 @@ export default {
         // 扩展
         additionalModules: [
           // 小地图
-          minimapModule,
+          // minimapModule,
           // 自定义工具栏
           customPalette,
           // 自定义渲染
@@ -125,7 +126,7 @@ export default {
       this.initArrow('sequenceflow-arrow-active')
 
       // 默认打开 minimap
-      this.bpmnModeler.get('minimap').open()
+      // this.bpmnModeler.get('minimap').open()
     },
 
     createNewDiagram () {

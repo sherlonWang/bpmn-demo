@@ -15,6 +15,9 @@ import 'diagram-js-minimap/assets/diagram-js-minimap.css'
 import '@/assets/css/diagram-js.less'
 import '@/assets/css/bpmn.less'
 
+import global from './global'
+Vue.use(global)
+
 Vue.use(ElementUI)
 
 Vue.config.productionTip = false
