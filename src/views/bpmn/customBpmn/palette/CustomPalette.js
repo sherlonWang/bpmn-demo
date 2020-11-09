@@ -440,35 +440,35 @@ Palette.prototype.isActiveTool = function (tool) {
 }
 
 Palette.prototype.updateToolHighlight = function (name) {
-  console.log("palette updateToolHighlight")
-  var entriesContainer,
-    toolsContainer
-
-  if (!this._toolsContainer) {
-    entriesContainer = domQuery('.custom-palette-entries', this._container)
-
-    this._toolsContainer = domQuery('[data-group=tools]', entriesContainer)
-  }
-
-  toolsContainer = this._toolsContainer
-
-  forEach(toolsContainer.children, function (tool) {
-    var actionName = tool.getAttribute('data-action')
-
-    if (!actionName) {
-      return
-    }
-
-    var toolClasses = domClasses(tool)
-
-    actionName = actionName.replace('-tool', '')
-
-    if (toolClasses.contains('entry') && actionName === name) {
-      toolClasses.add('highlighted-entry')
-    } else {
-      toolClasses.remove('highlighted-entry')
-    }
-  })
+  // console.log("palette updateToolHighlight")
+  // var entriesContainer,
+  //   toolsContainer
+  //
+  // if (!this._toolsContainer) {
+  //   entriesContainer = domQuery('.custom-palette-entries', this._container)
+  //
+  //   this._toolsContainer = domQuery('[data-group=tools]', entriesContainer)
+  // }
+  //
+  // toolsContainer = this._toolsContainer
+  //
+  // forEach(toolsContainer.children, function (tool) {
+  //   var actionName = tool.getAttribute('data-action')
+  //
+  //   if (!actionName) {
+  //     return
+  //   }
+  //
+  //   var toolClasses = domClasses(tool)
+  //
+  //   actionName = actionName.replace('-tool', '')
+  //
+  //   if (toolClasses.contains('entry') && actionName === name) {
+  //     toolClasses.add('highlighted-entry')
+  //   } else {
+  //     toolClasses.remove('highlighted-entry')
+  //   }
+  // })
 }
 
 /**

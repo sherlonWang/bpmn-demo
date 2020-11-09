@@ -10,6 +10,7 @@
       <el-button @click="handlerZoom(-0.1)">缩小</el-button>
       <el-button @click="handlerZoom(0)">还原</el-button>
       <el-button @click="getElementAll">获取所有元素</el-button>
+      <el-button @click="handTool">连线</el-button>
 
       <input type="file"
         id="files"
@@ -250,6 +251,9 @@ export default {
       const all = this.bpmnModeler.get('elementRegistry').getAll()
       console.log('all', all)
       return all
+    },
+    handTool(){
+      this.bpmnModeler.get('spaceTool').toggle()
     },
     // 根据 id 获取元素
     getElementById (id) {
